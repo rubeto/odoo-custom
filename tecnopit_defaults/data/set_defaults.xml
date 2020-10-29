@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+<data noupdate='1'>
+        <!-- Borra estados/provincias excepto las de Argentina -->
+        <delete model='res.country.state' search="[('country_id.name','!=','Argentina')]"/>
+
+        <!-- Pone b2b modo portal (se invita a los usuarios a registrarse) -->
+        <function model='ir.config_parameter' name='set_param' eval="('auth_signup.invitation_scope','b2b')"/>
+
+        <!-- Fix PDF sin CSS para wkhtmltopdf -->
+        <function model='ir.config_parameter' name='set_param' eval="('report.url','http://0.0.0.0:8069')"/>
+
+        <!-- Deshabilita show_efect -->
+        <function model='ir.config_parameter' name='set_param' eval="('base_setup.show_effect',False)"/>
+
+        <!-- Habilita attachment_large_object -->
+        <function model='ir.config_parameter' name='set_param' eval="('ir_attachment.location','lobject')"/>
+        <!-- <function model='ir.config_parameter' name='set_param' eval="('ir_attachment.location','postgresql:lobject')"/> -->
+
+        <!-- Pone la cinta de TEST -->
+        <!-- <function model='ir.config_parameter' name='set_param' eval="('ribbon.name','TEST&lt;br/&gt;({db_name})')"/> -->
+        <!-- <function model='ir.config_parameter' name='set_param' eval="('ribbon.color','#f0f0f0')"/> -->
+        <!-- <function model='ir.config_parameter' name='set_param' eval="('ribbon.background.color','rgba(123,90,121,.6)')"/> -->
+
+        <!-- Parametriza aeroo docs -->
+        <function model='ir.config_parameter' name='set_param' eval="('aeroo.docs_enabled','True')"/>
+​        <function model='ir.config_parameter' name='set_param' eval="('aeroo.docs_host','aeroo')"/>
+​        <function model='ir.config_parameter' name='set_param' eval="('aeroo.docs_port','8989')"/>
+​        <function model='ir.config_parameter' name='set_param' eval="('aeroo.docs_auth_type','simple')"/>
+​        <function model='ir.config_parameter' name='set_param' eval="('aeroo.docs_username','anonymous')"/>
+        <function model='ir.config_parameter' name='set_param' eval="('aeroo.docs_password','anonymous')"/>
+​
+        <!-- Pone los WS de AFIP en modo homologacion -->
+        <function model='ir.config_parameter' name='set_param' eval="('afip.ws.env.type','homologation')"/>
+</data>
+</odoo>

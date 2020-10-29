@@ -1,0 +1,38 @@
+<?xml version="1.0"  encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!--Email template -->
+        <record id="mail_template_report" model="mail.template">
+            <field name="name">Protocolo: Enviar por correo electrónico</field>
+            <field name="model_id" ref="laboratory.model_service_order"/>
+            <field name="email_from">${object.user_id.email_formatted |safe}</field>
+            <field name="partner_to">${object.partner_service_id.id}</field>
+            <field name="subject">${object.company_id.report_company_name} - Protocolo: ${object.name or 'n/a'}</field>
+            <field name="body_html" type="html">
+<div style="font-family: Open Sans; margin: 0px; padding: 0px;">
+    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+        Estimado/a: ${object.partner_service_id.name},
+        % if object.partner_service_id.parent_id:
+            (${object.partner_service_id.parent_id.name})
+        % endif
+        <br /><br />
+        Adjunto encontrará el
+        % if object.name:
+            Protocolo <strong>${object.name}</strong>
+        % endif
+
+        <br /><br />
+        Por favor no dude en contactarnos ante cualquier duda.
+    </p>
+</div>
+            </field>
+            <field name="report_template" ref="laboratory.action_report_service_order"/>
+            <field name="report_name">${(object.name or 'Borrador')}</field>
+            <field name="lang">${object.partner_service_id.lang}</field>
+            <field name="user_signature" eval="False"/>
+            <field name="auto_delete" eval="False"/>
+        </record>
+
+    </data>
+</odoo>
