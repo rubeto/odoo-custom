@@ -17,6 +17,7 @@
                 <field name="partner_name"/>
                 <!-- <field name="partner_service_id"/> -->
                 <field name="date_scheduled"/>
+                <field name="date_sampling"/>
                 <field name="date_validated"/>
                 <field name="operator"/>
                 <field name="state"/>
@@ -58,6 +59,7 @@
                         <group>
                             <field name="date_created" readonly="1"/>
                             <field name="date_scheduled" />
+                            <field name="date_sampling" />
                             <field name="date_validated"/>
                             <field name="operator" options="{'no_create_edit':True}" />
                             <!-- <label for="order_type"/> -->

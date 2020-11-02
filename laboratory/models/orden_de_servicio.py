@@ -80,6 +80,8 @@ class ServiceOrder(models.Model):
                                    required=True, index=True, copy=False, default=fields.Datetime.now)
     date_scheduled = fields.Date('Fecha Programada', required=True, index=True, track_visibility='onchange', readonly=True, states={
                                  'draft': [('readonly', False)]}, copy=False, help="Esta es la fecha de visita programada.")
+    date_sampling = fields.Date('Fecha Muestreo', required=False, index=True, track_visibility='onchange', readonly=True, states={
+                                 'draft': [('readonly', False)]}, copy=False, help="Esta es la fecha de toma de muestras.")
     date_validated = fields.Date('Fecha Validada', track_visibility='onchange',
                                  copy=False, readonly=True, help="Esta es la fecha de visita realizada.")
     operator = fields.Many2one("res.users", string="Responsable Técnico", required=True, track_visibility='onchange', domain=lambda self: [("groups_id", "=", self.env.ref(
@@ -88,7 +90,7 @@ class ServiceOrder(models.Model):
                                    track_visibility='onchange', readonly=True, states={'draft': [('readonly', False)]})
     con_copia_a = fields.Many2one("res.partner", string="Copia a",
                                    track_visibility='onchange', readonly=True, states={'draft': [('readonly', False)]})
-    mail_interlocutor = fields.Char(string="Mail", required=True)
+    mail_interlocutor = fields.Char(string="Mail", required=True, track_visibility='onchange', readonly=True, states={'draft': [('readonly', False)]}, default='')
     mail_con_copia_a = fields.Char(string="Copia a")
     state = fields.Selection([('draft', 'Borrador'), ('done', 'Validada'), ('sent', 'Enviada'), (
         'cancel', 'Cancelada')], required=True, track_visibility='onchange', default='draft', string='Estado')
@@ -206,8 +208,6 @@ class ServiceOrder(models.Model):
                 total += sum(muestras[key].values())
                 if len(muestras[key].keys()) != sum(muestras[key].values()) and sum(muestras[key].values()) != 0:
                     raise exceptions.UserError('Falta completrar algun(os) valor(es) de medición!')
-#                print('>>> ', key, ' >>> ', len(muestras[key].keys()))
-#                print('>>> ', key, ' >>> ', sum(muestras[key].values()))
 
             if total == 0:
                 raise exceptions.UserError('Falta completrar algun(os) valor(es) de medición!')
