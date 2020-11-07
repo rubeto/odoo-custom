@@ -178,12 +178,43 @@ class ServiceOrder(models.Model):
     def print_service_order(self):
         return self.env.ref('laboratory.action_report_service_order').report_action(self)
 
+#    @api.multi
+#    def email_service_order(self):
+#        if self.state not in ['done']:
+#            raise exceptions.UserError('No se puede enviar una orden no validada!') 
+#        template = self.env.ref('laboratory.mail_template_report')
+#        return self.env['mail.template'].browse(template.id).send_mail(self.id, force_send=True)
+
     @api.multi
     def email_service_order(self):
-        if self.state not in ['done']:
-            raise exceptions.UserError('No se puede enviar una orden no validada!') 
-        template = self.env.ref('laboratory.mail_template_report')
-        return self.env['mail.template'].browse(template.id).send_mail(self.id, force_send=True)
+        self.ensure_one()
+
+        ir_model_data = self.env['ir.model.data']
+        try:
+            template_id = ir_model_data.get_object_reference('laboratory', 'mail_template_report')[1]
+        except ValueError:
+            template_id = False
+        try:
+            compose_form_id = ir_model_data.get_object_reference('mail', 'email_compose_message_wizard_form')[1]
+        except ValueError:
+            compose_form_id = False
+
+        return {
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'mail.compose.message',
+            'views': [(compose_form_id, 'form')],
+            'view_id': compose_form_id,
+            'target': 'new',
+            'context': {
+               'default_model': 'service.order',
+               'default_res_id': self.ids[0],
+               'default_use_template': bool(template_id),
+               'default_template_id': template_id,
+               'default_composition_mode': 'comment',
+            }
+        }
 
     @api.multi
     def button_validar(self):

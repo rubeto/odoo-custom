@@ -37,7 +37,7 @@
                     <button string="Validar" name="button_validar" type="object" class="oe_highlight" confirm=''/>
                     <button string="Volver a borrador" name="button_reset" type="object" confirm=''/>
                     <button string="Cancelar" name="button_cancel" type="object" confirm=''/>
-                    <button string="Enviar por Correo Electrónico" name="email_service_order" type="object" confirm="Confirma el envío del correo electrónico?"/>
+                    <button string="Enviar por Correo Electrónico" name="email_service_order" type="object"/>
                     <button string="Imprimir" name="print_service_order" type="object"/>
                     <button string="ZAP" name="zap" type="object" attrs="{'invisible':[('user_id', '!=', 2)]}" class="btn-danger" />
                     <field name="state" widget="statusbar" statusbar_visible="draft,validated,done,sent,cancel"/>
