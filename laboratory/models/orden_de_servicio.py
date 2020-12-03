@@ -218,7 +218,7 @@ class ServiceOrder(models.Model):
 
     @api.multi
     def button_validar(self):
-#-----> AGREGAR CASO EN QUE UN PUNTO DE MUESTREO NO TIENE VALORES
+
         if self.state in ['done','sent','cancel']:
             raise exceptions.UserError('La orden no se puede validar!')
 
@@ -350,6 +350,21 @@ class ServiceOrder(models.Model):
             interlocutores.remove(self.interlocutor.id)
         res = {'domain' : {'con_copia_a': [('id', 'in', interlocutores)]}}
         return res
+
+    @api.onchange('operator')
+    def _onchange_operator(self):
+        print('>>>>>>>>>>>>>> ??????? ')
+        
+        if not self.firma_operador:
+            temp = self.env['res.users'].search([('id', '=', self.operator.id)]).digital_signature
+            if temp:
+                self.firma_operador = temp
+        
+#        print('>>> operator id: ', self.operator.id)
+#        print('&&&: ', self.env['res.users'].search([('id', '=', self.operator.id)]).digital_signature)
+#        print('>>> val firma: ', self.firma_operador)
+
+        return
 
     @api.onchange('con_copia_a')
     def _onchange_con_copia_a(self):

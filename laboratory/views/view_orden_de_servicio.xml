@@ -119,10 +119,10 @@
                         <page string="Aceptación">
                             <group>
                                 <group>
-                                    <field name="firma_cliente" widget="signature"/>
+                                    <field name="firma_cliente" widget="signature" readonly="0"/>
                                 </group>
                                 <group>
-                                    <field name="firma_operador" widget="signature"/>
+                                    <field name="firma_operador" widget="signature" readonly="0"/>
                                 </group>
                             </group>
                         </page>
